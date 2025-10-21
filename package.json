@@ -1,0 +1,42 @@
+{
+  "name": "sales-server",
+  "version": "1.0.0",
+  "description": "Sales management API server with Express, Sequelize, MySQL, and Socket.io",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "setup": "npm install && npm run db:create && npm run db:migrate && npm run db:seed",
+    "sequelize": "sequelize",
+    "db:create": "node -e \"(async()=>{const mysql=require('mysql2/promise');const dotenv=require('dotenv');dotenv.config();const conn=await mysql.createConnection({host:process.env.DB_HOST||'localhost',port:process.env.DB_PORT||3306,user:process.env.DB_USER||'root',password:process.env.DB_PASSWORD||''});await conn.query('CREATE DATABASE IF NOT EXISTS `'+(process.env.DB_NAME||'sales_db')+'` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');await conn.end();console.log('Database ensured');})().catch(e=>{console.error(e);process.exit(1);})\"",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "db:seed": "sequelize db:seed:all",
+    "db:seed:undo": "sequelize db:seed:undo:all",
+    "db:reset": "npm run db:migrate:undo && npm run db:migrate && npm run db:seed",
+    "logs": "tail -f logs/combined.log",
+    "logs:error": "tail -f logs/error.log",
+    "import:orders": "node mongo-orders-to-mysql.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.14.5",
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.7.5",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "sequelize-cli": "^6.6.2"
+  }
+}
