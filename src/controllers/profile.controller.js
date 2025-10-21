@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { User } from '../models/index.js';
 import { successResponse } from '../utils/responseFormatter.js';
 import { NotFoundError, ValidationError } from '../utils/errors.js';
