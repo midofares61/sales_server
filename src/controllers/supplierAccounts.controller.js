@@ -291,6 +291,7 @@ export const getSupplierStatement = async (req, res, next) => {
       transactions.push({
         id: order.id,
         type: 'order',
+        transaction_type: order.type,
         date_time: order.date_time,
         amount: parseFloat(order.total),
         debit: parseFloat(order.total),
@@ -305,6 +306,7 @@ export const getSupplierStatement = async (req, res, next) => {
       transactions.push({
         id: payment.id,
         type: 'payment',
+        transaction_type: payment.type,
         date_time: payment.date_time,
         amount: parseFloat(payment.amount),
         debit: 0,
