@@ -97,6 +97,7 @@ export const processBulkPayments = async (req, res, next) => {
 
 /**
  * Get all marketer payments with filters
+ * Groups payments by payment_date
  */
 export const getMarketerPayments = async (req, res, next) => {
   try {
@@ -128,15 +129,41 @@ export const getMarketerPayments = async (req, res, next) => {
         { model: Marketer, as: 'marketer', attributes: ['id', 'name', 'phone'] },
         { model: Order, as: 'order', attributes: ['id', 'order_code', 'customer_name', 'total'] }
       ],
-      order: [['payment_date', 'DESC']]
+      order: [['payment_date', 'DESC'], ['id', 'ASC']]
     });
     
-    const total = payments.reduce((sum, p) => sum + parseFloat(p.commission), 0);
+    // Group by payment_date
+    const groupedByDate = {};
+    
+    payments.forEach(payment => {
+      const dateKey = payment.payment_date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      
+      if (!groupedByDate[dateKey]) {
+        groupedByDate[dateKey] = {
+          payment_date: payment.payment_date,
+          payments: [],
+          total_commission: 0,
+          count: 0
+        };
+      }
+      
+      groupedByDate[dateKey].payments.push(payment);
+      groupedByDate[dateKey].total_commission += parseFloat(payment.commission);
+      groupedByDate[dateKey].count += 1;
+    });
+    
+    // Convert to array and sort by date descending
+    const groupedPayments = Object.values(groupedByDate).sort((a, b) => 
+      new Date(b.payment_date) - new Date(a.payment_date)
+    );
+    
+    const totalCommission = payments.reduce((sum, p) => sum + parseFloat(p.commission), 0);
     
     return successResponse(res, {
-      payments,
-      total: payments.length,
-      totalCommission: total
+      grouped_payments: groupedPayments,
+      total_payments: payments.length,
+      total_groups: groupedPayments.length,
+      total_commission: totalCommission
     });
   } catch (e) {
     next(e);
