@@ -10,7 +10,7 @@ import logger from '../config/logger.js';
 export const createSupplierOrder = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
-    const { supplier_id, details, notes, date_time } = req.body;
+    const { supplier_id, details, type, notes, date_time } = req.body;
     
     if (!supplier_id || !Array.isArray(details) || details.length === 0) {
       throw new ValidationError('Supplier ID and order details are required');
@@ -64,6 +64,7 @@ export const createSupplierOrder = async (req, res, next) => {
       supplier_id,
       total: orderTotal,
       status: 'completed',
+      type: type || null,
       notes: notes || null,
       date_time: date_time || new Date(),
       created_by: req.user?.id
@@ -150,7 +151,7 @@ export const getSupplierOrders = async (req, res, next) => {
 export const addSupplierPayment = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
-    const { supplier_id, amount, note, date_time } = req.body;
+    const { supplier_id, amount, type, note, date_time } = req.body;
     
     if (!supplier_id || !amount) {
       throw new ValidationError('Supplier ID and amount are required');
@@ -173,6 +174,7 @@ export const addSupplierPayment = async (req, res, next) => {
     const payment = await SupplierPayment.create({
       supplier_id,
       amount: paymentAmount,
+      type: type || null,
       note: note || null,
       date_time: date_time || new Date(),
       created_by: req.user?.id

@@ -36,6 +36,7 @@
 ```json
 {
   "supplier_id": 1,
+  "type": "مراتب",
   "details": [
     {
       "product_id": 5,
@@ -52,6 +53,13 @@
   "date_time": "2025-10-21T10:00:00.000Z"
 }
 ```
+
+### الحقول
+- `supplier_id` (required) - معرف المورد
+- `type` (optional) - نوع الفاتورة (نص حر، مثل: مراتب، اكسسوارات، مواد خام)
+- `details` (required) - تفاصيل المنتجات
+- `notes` (optional) - ملاحظات
+- `date_time` (optional) - تاريخ الفاتورة (افتراضي: الآن)
 
 ### Response
 ```json
@@ -168,10 +176,18 @@ GET /api/supplier-orders?supplier_id=1&start_date=2025-10-01&end_date=2025-10-31
 {
   "supplier_id": 1,
   "amount": 5000.00,
+  "type": "نقدي",
   "note": "دفعة على الحساب",
   "date_time": "2025-10-21T12:00:00.000Z"
 }
 ```
+
+### الحقول
+- `supplier_id` (required) - معرف المورد
+- `amount` (required) - قيمة الدفعة
+- `type` (optional) - نوع الدفعة (نص حر، مثل: نقدي، شيك، تحويل بنكي، فيزا)
+- `note` (optional) - ملاحظات
+- `date_time` (optional) - تاريخ الدفعة (افتراضي: الآن)
 
 ### Response
 ```json

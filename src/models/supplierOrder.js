@@ -8,6 +8,7 @@ export function initSupplierOrder(sequelize) {
     supplier_id: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     total: { type: DataTypes.DECIMAL(15, 2), allowNull: false, defaultValue: 0 },
     status: { type: DataTypes.ENUM('pending', 'completed', 'cancelled'), allowNull: false, defaultValue: 'pending' },
+    type: { type: DataTypes.STRING(100), allowNull: true },
     notes: { type: DataTypes.TEXT, allowNull: true },
     date_time: { type: DataTypes.DATE, allowNull: false },
     created_by: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true }
