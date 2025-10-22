@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.js';
 import { login, refresh, logout } from '../controllers/auth.controller.js';
 import { listSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../controllers/suppliers.controller.js';
-import { createSupplierOrder, getSupplierOrders, addSupplierPayment, getSupplierPayments, getSupplierStatement, deleteSupplierOrder, deleteSupplierPayment } from '../controllers/supplierAccounts.controller.js';
+import { createSupplierOrder, getSupplierOrders, updateSupplierOrder, addSupplierPayment, getSupplierPayments, updateSupplierPayment, getSupplierStatement, deleteSupplierOrder, deleteSupplierPayment } from '../controllers/supplierAccounts.controller.js';
 import { listProducts, createProduct, updateProduct, deleteProduct, updateStock, getProductHistory, reorderProduct } from '../controllers/products.controller.js';
 import { listMarketers, createMarketer, updateMarketer, deleteMarketer } from '../controllers/marketers.controller.js';
 import { listMandobes, createMandobe, updateMandobe, deleteMandobe } from '../controllers/mandobes.controller.js';
@@ -53,9 +53,11 @@ router.delete('/suppliers/:id', authenticate, authorize('admin'), deleteSupplier
 // Supplier Accounts (Orders & Payments)
 router.post('/supplier-orders', authenticate, authorize('admin'), createSupplierOrder);
 router.get('/supplier-orders', authenticate, authorize('admin'), getSupplierOrders);
+router.put('/supplier-orders/:id', authenticate, authorize('admin'), updateSupplierOrder);
 router.delete('/supplier-orders/:id', authenticate, authorize('admin'), deleteSupplierOrder);
 router.post('/supplier-payments', authenticate, authorize('admin'), addSupplierPayment);
 router.get('/supplier-payments', authenticate, authorize('admin'), getSupplierPayments);
+router.put('/supplier-payments/:id', authenticate, authorize('admin'), updateSupplierPayment);
 router.delete('/supplier-payments/:id', authenticate, authorize('admin'), deleteSupplierPayment);
 router.get('/suppliers/:supplier_id/statement', authenticate, authorize('admin'), getSupplierStatement);
 

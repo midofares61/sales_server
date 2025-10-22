@@ -351,6 +351,118 @@ export const getSupplierStatement = async (req, res, next) => {
 };
 
 /**
+ * Update supplier order
+ */
+export const updateSupplierOrder = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const { id } = req.params;
+    const { details, type, notes, date_time } = req.body;
+    
+    const order = await SupplierOrder.findByPk(id, {
+      include: [{ model: SupplierOrderDetail, as: 'details' }],
+      transaction: t
+    });
+    
+    if (!order) {
+      await t.rollback();
+      throw new NotFoundError('Order not found');
+    }
+    
+    const supplier = await Supplier.findByPk(order.supplier_id, { transaction: t });
+    
+    // Revert old order effects
+    const oldTotal = parseFloat(order.total);
+    
+    // Revert product stock for old details
+    for (const detail of order.details) {
+      const product = await Product.findByPk(detail.product_id, { transaction: t });
+      if (product) {
+        const newCount = product.count - detail.quantity;
+        await product.update({ count: Math.max(0, newCount) }, { transaction: t });
+      }
+    }
+    
+    // Delete old details
+    await SupplierOrderDetail.destroy({
+      where: { supplier_order_id: id },
+      transaction: t
+    });
+    
+    // Process new details if provided
+    let newTotal = oldTotal;
+    if (details && Array.isArray(details) && details.length > 0) {
+      newTotal = 0;
+      
+      for (const detail of details) {
+        const { product_id, quantity, price } = detail;
+        
+        if (!product_id || !quantity || !price) {
+          await t.rollback();
+          throw new ValidationError('Each detail must have product_id, quantity, and price');
+        }
+        
+        const product = await Product.findByPk(product_id, { transaction: t });
+        if (!product) {
+          await t.rollback();
+          throw new ValidationError(`Product ${product_id} not found`);
+        }
+        
+        const itemTotal = parseFloat(quantity) * parseFloat(price);
+        newTotal += itemTotal;
+        
+        // Create new detail
+        await SupplierOrderDetail.create({
+          supplier_order_id: id,
+          product_id,
+          quantity: parseInt(quantity),
+          price: parseFloat(price),
+          total: itemTotal
+        }, { transaction: t });
+        
+        // Update product stock
+        const newCount = product.count + parseInt(quantity);
+        await product.update({ count: newCount }, { transaction: t });
+      }
+    }
+    
+    // Update order
+    await order.update({
+      total: newTotal,
+      type: type !== undefined ? type : order.type,
+      notes: notes !== undefined ? notes : order.notes,
+      date_time: date_time !== undefined ? new Date(date_time) : order.date_time
+    }, { transaction: t });
+    
+    // Update supplier balance
+    const balanceDiff = newTotal - oldTotal;
+    const newBalance = parseFloat(supplier.balance) + balanceDiff;
+    await supplier.update({ balance: newBalance }, { transaction: t });
+    
+    await t.commit();
+    
+    // Fetch updated order
+    const updatedOrder = await SupplierOrder.findByPk(id, {
+      include: [
+        { 
+          model: SupplierOrderDetail, 
+          as: 'details',
+          include: [{ model: Product, as: 'product', attributes: ['id', 'code', 'name'] }]
+        },
+        { model: Supplier, as: 'supplier', attributes: ['id', 'name', 'balance'] }
+      ]
+    });
+    
+    logger.info(`Supplier order updated: ${id} by user: ${req.user.name}`);
+    
+    return successResponse(res, updatedOrder, 'Order updated successfully');
+  } catch (e) {
+    await t.rollback();
+    next(e);
+  }
+};
+
+/**
  * Delete supplier order (undo)
  */
 export const deleteSupplierOrder = async (req, res, next) => {
@@ -389,6 +501,66 @@ export const deleteSupplierOrder = async (req, res, next) => {
     logger.info(`Supplier order deleted: ${id} by user: ${req.user.name}`);
     
     return successResponse(res, null, 'Order deleted successfully', 204);
+  } catch (e) {
+    await t.rollback();
+    next(e);
+  }
+};
+
+/**
+ * Update supplier payment
+ */
+export const updateSupplierPayment = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const { id } = req.params;
+    const { amount, type, note, date_time } = req.body;
+    
+    const payment = await SupplierPayment.findByPk(id, { transaction: t });
+    if (!payment) {
+      await t.rollback();
+      throw new NotFoundError('Payment not found');
+    }
+    
+    const supplier = await Supplier.findByPk(payment.supplier_id, { transaction: t });
+    
+    // Revert old payment from balance
+    const oldAmount = parseFloat(payment.amount);
+    
+    // Calculate new amount
+    const newAmount = amount !== undefined ? parseFloat(amount) : oldAmount;
+    
+    if (newAmount <= 0) {
+      await t.rollback();
+      throw new ValidationError('Payment amount must be positive');
+    }
+    
+    // Update payment
+    await payment.update({
+      amount: newAmount,
+      type: type !== undefined ? type : payment.type,
+      note: note !== undefined ? note : payment.note,
+      date_time: date_time !== undefined ? new Date(date_time) : payment.date_time
+    }, { transaction: t });
+    
+    // Update supplier balance
+    const balanceDiff = oldAmount - newAmount; // If new amount is less, balance increases
+    const newBalance = parseFloat(supplier.balance) + balanceDiff;
+    await supplier.update({ balance: newBalance }, { transaction: t });
+    
+    await t.commit();
+    
+    // Fetch updated payment
+    const updatedPayment = await SupplierPayment.findByPk(id, {
+      include: [
+        { model: Supplier, as: 'supplier', attributes: ['id', 'name', 'balance'] },
+        { model: User, as: 'creator', attributes: ['id', 'name'] }
+      ]
+    });
+    
+    logger.info(`Supplier payment updated: ${id} by user: ${req.user.name}`);
+    
+    return successResponse(res, updatedPayment, 'Payment updated successfully');
   } catch (e) {
     await t.rollback();
     next(e);
