@@ -666,3 +666,5 @@
 {"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-10-21 13:17:12"}
 {"level":"info","message":"Filtering by month: 9","service":"sales-api","timestamp":"2025-10-21 13:55:00"}
 {"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-10-21 13:55:00"}
+{"level":"info","message":"Filtering by month: 9","service":"sales-api","timestamp":"2025-10-21 17:36:49"}
+{"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-10-21 17:36:49"}

@@ -134,7 +134,7 @@ socket.on('order:updated', (data) => {
 
 socket.on('order:deleted', (data) => {
   console.log('فاتورة محذوفة:', data.order.id);
-  // حذف من القائمة
+  // حذف من القائمة 
   removeOrderFromList(data.order.id);
 });
 
@@ -147,7 +147,7 @@ socket.on('product:updated', (data) => {
   updateProductInList(data.product);
 });
 
-socket.on('product:stock_updated', (data) => {
+socket.on('product:stock_updated', (data) => { 
   updateProductInList(data.product);
   if (data.product.count < 10) {
     showWarning(`المخزون منخفض: ${data.product.name} (${data.product.count})`);

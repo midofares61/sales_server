@@ -16,7 +16,9 @@ export const env = {
   jwt: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN || '30d'
-  }
+  },
+  serverUrl: process.env.SERVER_URL, // رابط السيرفر على Render (مثال: https://your-app.onrender.com)
+  keepAlivePingInterval: Number(process.env.KEEP_ALIVE_PING_INTERVAL || 10) // المدة بين كل Ping بالدقائق
 };
 
 

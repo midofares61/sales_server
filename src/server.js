@@ -10,6 +10,7 @@ import router from './routes/index.js';
 import { connectDatabase } from './models/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { SocketEvents, emitEvent } from './utils/socketEvents.js';
+import keepAliveService from './services/keepAlive.service.js';
 
 // Validate required environment variables
 if (!env.jwt.secret) {
@@ -56,6 +57,15 @@ const start = async () => {
     server.listen(env.port, () => {
       // eslint-disable-next-line no-console
       console.log(`Server listening on port ${env.port}`);
+      
+      // تفعيل خدمة Keep-Alive إذا كان SERVER_URL موجود في المتغيرات البيئية
+      if (env.serverUrl) {
+        const pingInterval = env.keepAlivePingInterval || 10; // افتراضي 10 دقائق
+        keepAliveService.start(env.serverUrl, pingInterval);
+        console.log(`🔄 Keep-Alive service activated for: ${env.serverUrl}`);
+      } else {
+        console.log('ℹ️ Keep-Alive service disabled (SERVER_URL not set)');
+      }
     });
   } catch (err) {
     // eslint-disable-next-line no-console

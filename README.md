@@ -13,6 +13,7 @@ A comprehensive sales management API server built with Node.js, Express, Sequeli
 - **Pagination**: Built-in pagination for all list endpoints
 - **Security**: Helmet, CORS, and request sanitization
 - **Database Migrations**: Sequelize migrations for database schema management
+- **Keep-Alive**: Automatic keep-alive service to prevent server sleep on free hosting platforms
 
 ## Prerequisites
 
@@ -51,6 +52,10 @@ A comprehensive sales management API server built with Node.js, Express, Sequeli
    
    PORT=3000
    NODE_ENV=development
+   
+   # Optional: For Render deployment keep-alive
+   SERVER_URL=https://your-app.onrender.com
+   KEEP_ALIVE_PING_INTERVAL=10
    ```
 
 4. **Set up the database**
@@ -244,12 +249,43 @@ Content-Type: application/json
 }
 ```
 
-### Health Check
+### Health Check & Keep-Alive
 
-#### Check Server Status
+#### Check Server Status (Detailed)
 ```http
 GET /api/health
 ```
+
+**Response:**
+```json
+{
+  "status": "ok",
+  "timestamp": "2024-10-23T15:30:00.000Z",
+  "uptime": 3600.5,
+  "memory": {
+    "used": 45,
+    "total": 128,
+    "unit": "MB"
+  },
+  "keepAlive": {
+    "enabled": true,
+    "serverUrl": "https://your-app.onrender.com",
+    "pingIntervalMinutes": 10
+  }
+}
+```
+
+#### Quick Ping
+```http
+GET /api/ping
+```
+
+#### Keep-Alive Status
+```http
+GET /api/keepalive/status
+```
+
+**📘 For complete Keep-Alive setup and documentation, see [KEEP_ALIVE.md](./KEEP_ALIVE.md)**
 
 ## Socket.io Events
 

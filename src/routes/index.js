@@ -10,6 +10,7 @@ import { listOrders, getOrderById, createOrder, updateOrder, deleteOrder, update
 import { processBulkPayments, getMarketerPayments, getMarketerPaymentStats, getPaymentsByMonth, deletePayment } from '../controllers/marketerPayments.controller.js';
 import { getProfile, updateProfile, changePassword } from '../controllers/profile.controller.js';
 import usersRouter from './users.routes.js';
+import healthRouter from './health.routes.js';
 
 // Validators
 import { validateLogin, validateRequest } from '../validators/auth.validator.js';
@@ -21,15 +22,8 @@ import { validateMandobe, validateMandobeUpdate } from '../validators/mandobes.v
 
 const router = Router();
 
-// Health check
-router.get('/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
-});
+// Health check & Keep-Alive endpoints
+router.use('/', healthRouter);
 
 // Auth
 router.post('/auth/login', validateLogin, validateRequest, login);
