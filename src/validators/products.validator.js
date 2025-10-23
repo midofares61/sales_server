@@ -16,6 +16,11 @@ export const validateProduct = [
     .withMessage('Product name must be between 2 and 100 characters')
     .trim(),
   
+  body('price')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('Price must be a non-negative number'),
+  
   body('count')
     .optional()
     .isInt({ min: 0 })
@@ -40,6 +45,11 @@ export const validateProductUpdate = [
     .isLength({ min: 2, max: 100 })
     .withMessage('Product name must be between 2 and 100 characters')
     .trim(),
+  
+  body('price')
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage('Price must be a non-negative number'),
   
   body('count')
     .optional()

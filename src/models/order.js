@@ -17,6 +17,7 @@ export function initOrder(sequelize) {
     sells: { type: DataTypes.BOOLEAN, defaultValue: false },
     mandobe: { type: DataTypes.BOOLEAN, defaultValue: false },
     total: { type: DataTypes.DECIMAL(10, 2), allowNull: false, defaultValue: 0 },
+    shipping: { type: DataTypes.DECIMAL(10, 2), allowNull: true, defaultValue: null },
     status: { type: DataTypes.ENUM('pending', 'accept', 'refuse', 'delay'), defaultValue: 'pending' },
     notes: { type: DataTypes.TEXT },
     mandobe_id: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },

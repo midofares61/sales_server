@@ -40,6 +40,15 @@ export const validateOrder = [
     .isFloat({ min: 0 })
     .withMessage('Total must be a non-negative number'),
   
+  body('shipping')
+    .optional({ nullable: true })
+    .custom((value) => {
+      if (value === null || value === undefined || value === '') return true;
+      const num = Number(value);
+      if (!isNaN(num) && num >= 0) return true;
+      throw new Error('Shipping must be a non-negative number or null');
+    }),
+  
   body('status')
     .optional()
     .isIn(['pending', 'accept', 'refuse', 'delay'])
@@ -122,6 +131,15 @@ export const validateOrderUpdate = [
     .optional()
     .isFloat({ min: 0 })
     .withMessage('Total must be a non-negative number'),
+  
+  body('shipping')
+    .optional({ nullable: true })
+    .custom((value) => {
+      if (value === null || value === undefined || value === '') return true;
+      const num = Number(value);
+      if (!isNaN(num) && num >= 0) return true;
+      throw new Error('Shipping must be a non-negative number or null');
+    }),
   
   body('status')
     .optional()
