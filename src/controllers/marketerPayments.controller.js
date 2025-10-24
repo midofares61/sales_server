@@ -3,6 +3,38 @@ import { successResponse } from '../utils/responseFormatter.js';
 import { NotFoundError, ValidationError } from '../utils/errors.js';
 import logger from '../config/logger.js';
 
+// Helper functions to match getOrder format
+function mapOrderDetailsToClientShape(details) {
+  if (!Array.isArray(details)) return [];
+  return details.map(d => ({
+    code: d.product?.code ? (isNaN(Number(d.product.code)) ? d.product.code : Number(d.product.code)) : undefined,
+    price: Number(d.price ?? 0),
+    name: d.product?.name,
+    count: Number(d.quantity ?? 0),
+    details: d.details ?? null,
+    id: d.product?.code ?? String(d.id)
+  }));
+}
+
+function mapOrderToClient(o) {
+  if (!o) return null;
+  const plain = typeof o.get === 'function' ? o.get({ plain: true }) : o;
+  return {
+    ...plain,
+    orderCode: plain.order_code,
+    dateTime: plain.created_at,
+    details: mapOrderDetailsToClientShape(o.details || plain.details),
+    mandobeName: o.mandobeUser?.name || plain.mandobeUser?.name || '',
+    code: o.marketer?.name || plain.marketer?.name || null,
+    mandobeUser: undefined,
+    marketer: undefined,
+    order_code: undefined,
+    date_time: undefined,
+    created_at: undefined,
+    updated_at: undefined
+  };
+}
+
 /**
  * Process bulk marketer payments
  * Accepts array of {order_id, marketer_id, commission}
@@ -162,7 +194,7 @@ export const getMarketerPayments = async (req, res, next) => {
       order: [['payment_date', 'DESC'], ['id', 'ASC']]
     });
     
-    // Group by payment_date
+    // Group by payment_date and format orders
     const groupedByDate = {};
     
     payments.forEach(payment => {
@@ -177,7 +209,13 @@ export const getMarketerPayments = async (req, res, next) => {
         };
       }
       
-      groupedByDate[dateKey].payments.push(payment);
+      // Format the payment with order matching getOrder format
+      const formattedPayment = {
+        ...payment.toJSON(),
+        order: mapOrderToClient(payment.order)
+      };
+      
+      groupedByDate[dateKey].payments.push(formattedPayment);
       groupedByDate[dateKey].total_commission += parseFloat(payment.commission);
       groupedByDate[dateKey].count += 1;
     });
@@ -315,7 +353,7 @@ export const getPaymentsByMonth = async (req, res, next) => {
       order: [['payment_date', 'DESC']]
     });
     
-    // Group by month
+    // Group by month and format orders
     const byMonth = {};
     
     payments.forEach(payment => {
@@ -332,7 +370,13 @@ export const getPaymentsByMonth = async (req, res, next) => {
         };
       }
       
-      byMonth[monthKey].payments.push(payment);
+      // Format the payment with order matching getOrder format
+      const formattedPayment = {
+        ...payment.toJSON(),
+        order: mapOrderToClient(payment.order)
+      };
+      
+      byMonth[monthKey].payments.push(formattedPayment);
       byMonth[monthKey].totalCommission += parseFloat(payment.commission);
       byMonth[monthKey].count += 1;
     });
