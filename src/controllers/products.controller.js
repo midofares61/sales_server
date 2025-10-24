@@ -230,15 +230,7 @@ export const reorderProduct = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id;
-    const { direction } = req.body; // 'up' or 'down'
-    
-    if (!['up', 'down'].includes(direction)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Direction must be "up" or "down"',
-        timestamp: new Date().toISOString()
-      });
-    }
+    const { direction, newPosition, newOrderBy } = req.body;
     
     const currentProduct = await Product.findByPk(id, { transaction: t });
     if (!currentProduct) {
@@ -246,12 +238,80 @@ export const reorderProduct = async (req, res, next) => {
       throw new NotFoundError('Product not found');
     }
     
+    const oldOrderBy = currentProduct.order_by || 0;
+    
+    // NEW: Drag & Drop mode - reorder to specific position
+    if (newPosition !== undefined || newOrderBy !== undefined) {
+      const targetOrderBy = newOrderBy !== undefined ? newOrderBy : newPosition;
+      
+      if (typeof targetOrderBy !== 'number' || targetOrderBy < 0) {
+        await t.rollback();
+        return res.status(400).json({
+          success: false,
+          message: 'newPosition/newOrderBy must be a non-negative number',
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Get all products ordered by order_by
+      const allProducts = await Product.findAll({
+        order: [['order_by', 'ASC'], ['id', 'ASC']],
+        transaction: t
+      });
+      
+      // Remove current product from list
+      const productsWithoutCurrent = allProducts.filter(p => p.id !== parseInt(id));
+      
+      // Insert current product at new position
+      productsWithoutCurrent.splice(targetOrderBy, 0, currentProduct);
+      
+      // Update order_by for all products
+      const updatePromises = productsWithoutCurrent.map((product, index) => {
+        return product.update({ order_by: index }, { transaction: t });
+      });
+      
+      await Promise.all(updatePromises);
+      await t.commit();
+      
+      const updatedProduct = await Product.findByPk(id);
+      
+      // Emit socket event for all products reordered
+      emitEvent(req.io, SocketEvents.PRODUCT_UPDATED, { 
+        product: updatedProduct.toJSON(),
+        changes: {
+          order_by: {
+            old: oldOrderBy,
+            new: updatedProduct.order_by
+          }
+        },
+        reorderType: 'drag-drop',
+        updatedBy: req.user?.name
+      });
+      
+      logger.info(`Product ${id} reordered from position ${oldOrderBy} to ${targetOrderBy} by user: ${req.user.name}`);
+      
+      return successResponse(res, { 
+        id, 
+        old_position: oldOrderBy,
+        new_position: updatedProduct.order_by
+      }, 'Product reordered successfully');
+    }
+    
+    // OLD: Up/Down mode - move one step (backward compatible)
+    if (!['up', 'down'].includes(direction)) {
+      await t.rollback();
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide either "direction" (up/down) or "newPosition"',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     const currentOrderBy = currentProduct.order_by || 0;
     
     // Find the product to swap with
     let targetProduct;
     if (direction === 'up') {
-      // Find product with next smaller order_by
       targetProduct = await Product.findOne({
         where: {
           order_by: { [sequelize.Sequelize.Op.lt]: currentOrderBy }
@@ -260,7 +320,6 @@ export const reorderProduct = async (req, res, next) => {
         transaction: t
       });
     } else {
-      // Find product with next larger order_by
       targetProduct = await Product.findOne({
         where: {
           order_by: { [sequelize.Sequelize.Op.gt]: currentOrderBy }
@@ -297,6 +356,7 @@ export const reorderProduct = async (req, res, next) => {
           new: updatedProduct.order_by
         }
       },
+      reorderType: 'up-down',
       updatedBy: req.user?.name
     });
     
