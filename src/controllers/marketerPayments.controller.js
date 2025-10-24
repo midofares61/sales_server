@@ -1,4 +1,4 @@
-import { sequelize, MarketerPayment, Order, Marketer } from '../models/index.js';
+import { sequelize, MarketerPayment, Order, Marketer, OrderDetail, Product, Mandobe } from '../models/index.js';
 import { successResponse } from '../utils/responseFormatter.js';
 import { NotFoundError, ValidationError } from '../utils/errors.js';
 import logger from '../config/logger.js';
@@ -126,8 +126,38 @@ export const getMarketerPayments = async (req, res, next) => {
     const payments = await MarketerPayment.findAll({
       where,
       include: [
-        { model: Marketer, as: 'marketer', attributes: ['id', 'name', 'phone'] },
-        { model: Order, as: 'order', attributes: ['id', 'order_code', 'customer_name', 'total'] }
+        { 
+          model: Marketer, 
+          as: 'marketer', 
+          attributes: ['id', 'name', 'phone'] 
+        },
+        { 
+          model: Order, 
+          as: 'order',
+          include: [
+            { 
+              model: OrderDetail, 
+              as: 'details',
+              include: [
+                { 
+                  model: Product, 
+                  as: 'product',
+                  attributes: ['id', 'code', 'name', 'price']
+                }
+              ]
+            },
+            { 
+              model: Mandobe, 
+              as: 'mandobeUser',
+              attributes: ['id', 'name', 'phone']
+            },
+            { 
+              model: Marketer, 
+              as: 'marketer',
+              attributes: ['id', 'name', 'phone']
+            }
+          ]
+        }
       ],
       order: [['payment_date', 'DESC'], ['id', 'ASC']]
     });
@@ -249,8 +279,38 @@ export const getPaymentsByMonth = async (req, res, next) => {
     const payments = await MarketerPayment.findAll({
       where,
       include: [
-        { model: Marketer, as: 'marketer', attributes: ['id', 'name', 'phone'] },
-        { model: Order, as: 'order', attributes: ['id', 'order_code', 'customer_name', 'total'] }
+        { 
+          model: Marketer, 
+          as: 'marketer', 
+          attributes: ['id', 'name', 'phone'] 
+        },
+        { 
+          model: Order, 
+          as: 'order',
+          include: [
+            { 
+              model: OrderDetail, 
+              as: 'details',
+              include: [
+                { 
+                  model: Product, 
+                  as: 'product',
+                  attributes: ['id', 'code', 'name', 'price']
+                }
+              ]
+            },
+            { 
+              model: Mandobe, 
+              as: 'mandobeUser',
+              attributes: ['id', 'name', 'phone']
+            },
+            { 
+              model: Marketer, 
+              as: 'marketer',
+              attributes: ['id', 'name', 'phone']
+            }
+          ]
+        }
       ],
       order: [['payment_date', 'DESC']]
     });
