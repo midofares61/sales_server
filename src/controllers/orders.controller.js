@@ -1,4 +1,4 @@
-import { sequelize, Order, OrderDetail, Product, Marketer, Mandobe, OrderCode } from '../models/index.js';
+import { sequelize, Order, OrderDetail, Product, Marketer, Mandobe } from '../models/index.js';
 import { Op } from 'sequelize';
 import { successResponse, paginatedResponse } from '../utils/responseFormatter.js';
 import { NotFoundError } from '../utils/errors.js';
@@ -18,25 +18,8 @@ function mapOrderDetailsToClientShape(details) {
   }));
 }
 
-async function generateOrderCode() {
-  const t = await sequelize.transaction();
-  try {
-    const [orderCodeRecord] = await OrderCode.findAll({ limit: 1, transaction: t, lock: true });
-    if (!orderCodeRecord) {
-      // Initialize if not exists
-      const newRecord = await OrderCode.create({ current: 1 }, { transaction: t });
-      await t.commit();
-      return '1';
-    }
-    const nextCode = orderCodeRecord.current + 1;
-    await orderCodeRecord.update({ current: nextCode }, { transaction: t });
-    await t.commit();
-    return String(nextCode);
-  } catch (e) {
-    await t.rollback();
-    throw e;
-  }
-}
+// Removed: generateOrderCode function (order_code system disabled)
+// If you need auto-generated order codes in the future, uncomment this function
 
 function mapOrderToClient(o) {
   const plain = o.get({ plain: true });
@@ -147,10 +130,8 @@ export const createOrder = async (req, res, next) => {
   try {
     const { details = [], ...orderData } = req.body;
     
-    // Generate order_code if not provided
-    if (!orderData.order_code && !orderData.orderCode) {
-      orderData.order_code = await generateOrderCode();
-    } else if (orderData.orderCode) {
+    // Handle orderCode field if provided (optional)
+    if (orderData.orderCode) {
       orderData.order_code = orderData.orderCode;
       delete orderData.orderCode;
     }
@@ -582,13 +563,6 @@ export const getOrderStatistics = async (req, res, next) => {
   }
 };
 
-export const getNextOrderCode = async (req, res, next) => {
-  try {
-    const nextCode = await generateOrderCode();
-    return successResponse(res, { orderCode: nextCode }, 'Next order code generated');
-  } catch (e) {
-    next(e);
-  }
-};
+// Removed: getNextOrderCode endpoint (order_code system disabled)
 
 

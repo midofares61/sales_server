@@ -6,7 +6,7 @@ import { createSupplierOrder, getSupplierOrders, updateSupplierOrder, addSupplie
 import { listProducts, createProduct, updateProduct, deleteProduct, updateStock, getProductHistory, reorderProduct } from '../controllers/products.controller.js';
 import { listMarketers, createMarketer, updateMarketer, deleteMarketer } from '../controllers/marketers.controller.js';
 import { listMandobes, createMandobe, updateMandobe, deleteMandobe } from '../controllers/mandobes.controller.js';
-import { listOrders, getOrderById, createOrder, updateOrder, deleteOrder, updateOrderStatus, updateOrderMandobe, updateOrderPayment, getOrderStatistics, getNextOrderCode } from '../controllers/orders.controller.js';
+import { listOrders, getOrderById, createOrder, updateOrder, deleteOrder, updateOrderStatus, updateOrderMandobe, updateOrderPayment, getOrderStatistics } from '../controllers/orders.controller.js';
 import { processBulkPayments, getMarketerPayments, getMarketerPaymentStats, getPaymentsByMonth, deletePayment } from '../controllers/marketerPayments.controller.js';
 import { getProfile, updateProfile, changePassword } from '../controllers/profile.controller.js';
 import usersRouter from './users.routes.js';
@@ -79,7 +79,6 @@ router.delete('/mandobes/:id', authenticate, authorize('admin'), deleteMandobe);
 // Orders
 router.get('/orders', authenticate, listOrders);
 router.get('/orders/statistics', authenticate, getOrderStatistics);
-router.get('/orders/next-code', authenticate, getNextOrderCode);
 router.get('/orders/:id', authenticate, getOrderById);
 router.post('/orders', authenticate, authorize('admin', 'marketer'), validateOrder, validateRequest, createOrder);
 router.put('/orders/:id', authenticate, authorize('admin', 'marketer'), validateOrderUpdate, validateRequest, updateOrder);
