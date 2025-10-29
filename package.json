@@ -27,12 +27,14 @@
     "express": "^4.19.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-validator": "^7.2.1",
+    "firebase-admin": "^13.5.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.14.5",
     "sequelize": "^6.37.7",
     "socket.io": "^4.7.5",
+    "string-similarity": "^4.0.4",
     "winston": "^3.18.3"
   },
   "devDependencies": {

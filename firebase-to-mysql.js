@@ -15,30 +15,29 @@ const db = admin.firestore();
 
 // ✅ إعداد MySQL
 const mysqlConn = mysql.createPool({
-  host: "localhost",       // غيره حسب السيرفر
-  user: "root",            // يوزر MySQL
-  password: "",    // باسورد MySQL
-  database: "sales_db",        // اسم قاعدة البيانات
+  host: "srv1973.hstgr.io",       // غيره حسب السيرفر
+  user: "u990838923_sales_db",            // يوزر MySQL
+  password: "Sales_db12345##",    // باسورد MySQL
+  database: "u990838923_sales_db",        // اسم قاعدة البيانات
 });
 
 // ✅ دالة تسحب البيانات من Firestore وتخزنها في MySQL
 async function migrate() {
   try {
     // مثال: نسحب الأوردرات من Firebase
-    const snapshot = await db.collection("product").orderBy("code").get();
+    const snapshot = await db.collection("code").get();
 
     for (const doc of snapshot.docs) {
       const data = doc.data();
 
       // إدخال في جدول ordersq
       await mysqlConn.query(
-        `INSERT INTO products (code, name, count)
-         VALUES (?, ?, ?)
-         ON DUPLICATE KEY UPDATE code=VALUES(code), name=VALUES(name), count=VALUES(count)`,
+        `INSERT INTO marketers (name, phone)
+         VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE name=VALUES(name), phone=VALUES(phone)`,
         [
-          data.code || "",
           data.name || "",
-          data.count || "",
+          data.phone || "",
         ]
       );
     }
