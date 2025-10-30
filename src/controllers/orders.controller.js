@@ -27,6 +27,7 @@ function mapOrderToClient(o) {
     ...plain,
     orderCode: plain.order_code,
     dateTime: plain.created_at,
+    total: parseInt(plain.total) || 0,
     details: mapOrderDetailsToClientShape(o.details),
     mandobeName: o.mandobeUser?.name || '',
     code: o.marketer?.name || null,
