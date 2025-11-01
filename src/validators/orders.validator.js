@@ -17,11 +17,7 @@ export const validateOrder = [
     .withMessage('Phone number contains invalid characters'),
   
   body('phone_two')
-    .optional()
-    .isLength({ min: 10, max: 15 })
-    .withMessage('Second phone number must be between 10 and 15 characters')
-    .matches(/^[0-9+\-\s()]+$/)
-    .withMessage('Second phone number contains invalid characters'),
+    .optional(),
   
   body('address')
     .optional()
@@ -109,11 +105,7 @@ export const validateOrderUpdate = [
     .withMessage('Phone number contains invalid characters'),
   
   body('phone_two')
-    .optional()
-    .isLength({ min: 10, max: 15 })
-    .withMessage('Second phone number must be between 10 and 15 characters')
-    .matches(/^[0-9+\-\s()]+$/)
-    .withMessage('Second phone number contains invalid characters'),
+    .optional(),
   
   body('address')
     .optional()
