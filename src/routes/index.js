@@ -7,6 +7,7 @@ import { listProducts, createProduct, updateProduct, deleteProduct, updateStock,
 import { listMarketers, createMarketer, updateMarketer, deleteMarketer } from '../controllers/marketers.controller.js';
 import { listMandobes, createMandobe, updateMandobe, deleteMandobe } from '../controllers/mandobes.controller.js';
 import { listOrders, getOrderById, createOrder, updateOrder, deleteOrder, updateOrderStatus, updateOrderMandobe, updateOrderPayment, getOrderStatistics } from '../controllers/orders.controller.js';
+import { getOrderNotes, getNoteById, createOrderNote, updateOrderNote, deleteOrderNote } from '../controllers/orderNotes.controller.js';
 import { processBulkPayments, getMarketerPayments, getMarketerPaymentStats, getPaymentsByMonth, deletePayment } from '../controllers/marketerPayments.controller.js';
 import { getProfile, updateProfile, changePassword } from '../controllers/profile.controller.js';
 import usersRouter from './users.routes.js';
@@ -16,6 +17,7 @@ import healthRouter from './health.routes.js';
 import { validateLogin, validateRequest } from '../validators/auth.validator.js';
 import { validateProduct, validateProductUpdate } from '../validators/products.validator.js';
 import { validateOrder, validateOrderUpdate } from '../validators/orders.validator.js';
+import { validateCreateNote, validateUpdateNote, validateNoteParams } from '../validators/orderNotes.validator.js';
 import { validateSupplier, validateSupplierUpdate } from '../validators/suppliers.validator.js';
 import { validateMarketer, validateMarketerUpdate } from '../validators/marketers.validator.js';
 import { validateMandobe, validateMandobeUpdate } from '../validators/mandobes.validator.js';
@@ -86,6 +88,13 @@ router.put('/orders/:id/status', authenticate, updateOrderStatus);
 router.put('/orders/:id/mandobe', authenticate, updateOrderMandobe);
 router.put('/orders/:id/payment', authenticate, updateOrderPayment);
 router.delete('/orders/:id', authenticate, deleteOrder);
+
+// Order Notes
+router.get('/orders/:orderId/notes', authenticate, getOrderNotes);
+router.get('/orders/:orderId/notes/:noteId', authenticate, validateNoteParams, validateRequest, getNoteById);
+router.post('/orders/:orderId/notes', authenticate, validateCreateNote, validateRequest, createOrderNote);
+router.put('/orders/:orderId/notes/:noteId', authenticate, validateUpdateNote, validateRequest, updateOrderNote);
+router.delete('/orders/:orderId/notes/:noteId', authenticate, validateNoteParams, validateRequest, deleteOrderNote);
 
 // Marketer Payments
 router.post('/marketer-payments/bulk', authenticate, processBulkPayments);

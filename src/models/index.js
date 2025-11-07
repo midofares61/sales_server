@@ -25,6 +25,7 @@ import { initSupplierOrder } from './supplierOrder.js';
 import { initSupplierOrderDetail } from './supplierOrderDetail.js';
 import { initSupplierPayment } from './supplierPayment.js';
 import { initOrderCode } from './orderCode.js';
+import { initOrderNote } from './orderNote.js';
 
 // Initialize models
 export const Supplier = initSupplier(sequelize);
@@ -33,6 +34,7 @@ export const Marketer = initMarketer(sequelize);
 export const Mandobe = initMandobe(sequelize);
 export const Order = initOrder(sequelize);
 export const OrderDetail = initOrderDetail(sequelize);
+export const OrderNote = initOrderNote(sequelize);
 export const User = initUser(sequelize);
 export const Vault = initVault(sequelize);
 export const VaultTransaction = initVaultTransaction(sequelize);
@@ -55,6 +57,9 @@ Order.belongsTo(Mandobe, { foreignKey: 'mandobe_id', as: 'mandobeUser' });
 
 Order.hasMany(OrderDetail, { foreignKey: 'order_id', as: 'details', onDelete: 'CASCADE' });
 OrderDetail.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
+
+Order.hasMany(OrderNote, { foreignKey: 'order_id', as: 'notes', onDelete: 'CASCADE' });
+OrderNote.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
 
 Product.hasMany(OrderDetail, { foreignKey: 'product_id', as: 'orderDetails' });
 OrderDetail.belongsTo(Product, { foreignKey: 'product_id', as: 'product' });
