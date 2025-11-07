@@ -87,7 +87,7 @@ export const listOrders = async (req, res, next) => {
     if (month) {
       where[Op.and] = where[Op.and] || [];
       where[Op.and].push(
-        sequelize.where(sequelize.fn('MONTH', sequelize.col('created_at')), parseInt(month))
+        sequelize.where(sequelize.fn('MONTH', sequelize.col('Order.created_at')), parseInt(month))
       );
       logger.info(`Filtering by month: ${month}`);
     }
@@ -95,7 +95,7 @@ export const listOrders = async (req, res, next) => {
     if (year) {
       where[Op.and] = where[Op.and] || [];
       where[Op.and].push(
-        sequelize.where(sequelize.fn('YEAR', sequelize.col('created_at')), parseInt(year))
+        sequelize.where(sequelize.fn('YEAR', sequelize.col('Order.created_at')), parseInt(year))
       );
       logger.info(`Filtering by year: ${year}`);
     }
