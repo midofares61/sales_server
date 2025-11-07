@@ -114,7 +114,7 @@ export const listOrders = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ],
       order: orderBy
     });
@@ -166,7 +166,7 @@ export const createOrder = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -199,7 +199,7 @@ export const updateOrder = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -241,7 +241,7 @@ export const updateOrder = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -289,7 +289,7 @@ export const getOrderById = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -314,7 +314,7 @@ export const deleteOrder = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -359,7 +359,7 @@ export const updateOrderStatus = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -380,7 +380,7 @@ export const updateOrderStatus = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -417,7 +417,7 @@ export const updateOrderMandobe = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -451,7 +451,7 @@ export const updateOrderMandobe = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -492,7 +492,7 @@ export const updateOrderPayment = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     
@@ -513,7 +513,7 @@ export const updateOrderPayment = async (req, res, next) => {
         { model: Mandobe, as: 'mandobeUser' },
         { model: Marketer, as: 'marketer' },
         { model: OrderDetail, as: 'details', include: [{ model: Product, as: 'product' }] },
-        { model: OrderNote, as: 'notes', order: [['created_at', 'DESC']] }
+        { model: OrderNote, as: 'orderNotes', order: [['created_at', 'DESC']] }
       ]
     });
     

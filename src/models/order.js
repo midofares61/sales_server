@@ -28,7 +28,16 @@ export function initOrder(sequelize) {
     tableName: 'orders',
     timestamps: true,
     createdAt: 'created_at',
-    updatedAt: false
+    updatedAt: false,
+    // Allow manual update of created_at field
+    hooks: {
+      beforeUpdate: (instance) => {
+        // This hook allows created_at to be manually updated
+        if (instance.changed('created_at')) {
+          instance.setDataValue('created_at', instance.get('created_at'));
+        }
+      }
+    }
   });
   return OrderModel;
 }

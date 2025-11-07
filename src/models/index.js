@@ -58,7 +58,7 @@ Order.belongsTo(Mandobe, { foreignKey: 'mandobe_id', as: 'mandobeUser' });
 Order.hasMany(OrderDetail, { foreignKey: 'order_id', as: 'details', onDelete: 'CASCADE' });
 OrderDetail.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
 
-Order.hasMany(OrderNote, { foreignKey: 'order_id', as: 'notes', onDelete: 'CASCADE' });
+Order.hasMany(OrderNote, { foreignKey: 'order_id', as: 'orderNotes', onDelete: 'CASCADE' });
 OrderNote.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
 
 Product.hasMany(OrderDetail, { foreignKey: 'product_id', as: 'orderDetails' });

@@ -193,7 +193,8 @@ GET /api/orders
   "address": "شارع النيل، القاهرة",
   "total": 500.00,
   "status": "pending",
-  "notes": [
+  "notes": "...",
+  "orderNotes": [
     {
       "id": 1,
       "order_id": 123,
@@ -330,7 +331,7 @@ Future<List<OrderNote>> getOrderNotes(int orderId) async {
 
 ## ملاحظات مهمة
 
-1. **الحقل القديم `notes` في جدول `orders`**: لا يزال موجوداً للتوافق مع الأنظمة القديمة، ولكن يُفضل استخدام نظام الملاحظات المتعددة الجديد.
+1. **الحقل القديم `notes` في جدول `orders`**: لا يزال موجوداً للتوافق مع الأنظمة القديمة (ملاحظة نصية واحدة). أما الملاحظات المتعددة الجديدة فتظهر في حقل `orderNotes` (array).
 
 2. **Authentication**: جميع endpoints تتطلب authentication token صالح.
 

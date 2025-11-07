@@ -668,3 +668,59 @@
 {"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-10-21 13:55:00"}
 {"level":"info","message":"Filtering by month: 9","service":"sales-api","timestamp":"2025-10-21 17:36:49"}
 {"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-10-21 17:36:49"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 10:32:44"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 10:37:16"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 10:38:00"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 10:46:44"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 11:11:51"}
+{"level":"info","message":"Order created: 11729 by user: Admin","service":"sales-api","timestamp":"2025-11-05 11:54:46"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 12:01:36"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 12:05:14"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 12:09:13"}
+{"level":"info","message":"Order created: 11730 by user: Admin","service":"sales-api","timestamp":"2025-11-05 12:38:50"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 12:48:00"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 13:15:21"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 14:46:22"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 14:52:03"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 14:53:22"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 15:28:58"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 15:45:08"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 15:49:45"}
+{"level":"info","message":"Order created: 11731 by user: Admin","service":"sales-api","timestamp":"2025-11-05 15:51:48"}
+{"ip":"::1","level":"error","message":"No token provided","method":"GET","service":"sales-api","stack":"Error: No token provided\n    at authenticate (file:///D:/server/src/middlewares/auth.js:10:11)\n    at Layer.handle [as handle_request] (D:\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\server\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (D:\\server\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (D:\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at D:\\server\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (D:\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (D:\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at D:\\server\\node_modules\\express\\lib\\router\\index.js:646:15\n    at next (D:\\server\\node_modules\\express\\lib\\router\\index.js:265:14)","timestamp":"2025-11-05 15:57:45","url":"/api/orders?q=mohamed","userAgent":"PostmanRuntime/7.45.0"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 15:57:54"}
+{"level":"info","message":"Order created: 11732 by user: Admin","service":"sales-api","timestamp":"2025-11-05 15:58:34"}
+{"level":"info","message":"Order created: 11733 by user: Admin","service":"sales-api","timestamp":"2025-11-05 16:00:04"}
+{"level":"info","message":"Order created: 11734 by user: Admin","service":"sales-api","timestamp":"2025-11-05 16:00:16"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 16:00:39"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 16:39:20"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 21:34:03"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 21:36:29"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 21:39:22"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 21:41:55"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-05 21:44:47"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-06 09:34:31"}
+{"level":"info","message":"Order created: 11735 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:36:00"}
+{"level":"info","message":"Order created: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:39:20"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:44:29"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:44:58"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:45:16"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:45:41"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:46:23"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:49:58"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 09:57:24"}
+{"level":"info","message":"Order updated: 11735 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:10:59"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-06 10:26:16"}
+{"level":"info","message":"Order updated: 11735 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:27:35"}
+{"level":"info","message":"Order updated: 11731 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:28:06"}
+{"level":"info","message":"Order updated: 11735 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:28:41"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:31:53"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:35:55"}
+{"level":"info","message":"Order updated: 11736 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:36:24"}
+{"level":"info","message":"Filtering by month: 11","service":"sales-api","timestamp":"2025-11-06 10:37:02"}
+{"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-11-06 10:37:02"}
+{"level":"info","message":"Filtering by month: 11","service":"sales-api","timestamp":"2025-11-06 10:41:16"}
+{"level":"info","message":"Filtering by year: 2025","service":"sales-api","timestamp":"2025-11-06 10:41:16"}
+{"level":"info","message":"Product 269 reordered from position 0 to 0 by user: Admin","service":"sales-api","timestamp":"2025-11-06 10:41:30"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-06 11:38:39"}
+{"level":"info","message":"Successful login for user: Admin (admin)","service":"sales-api","timestamp":"2025-11-06 15:24:19"}
